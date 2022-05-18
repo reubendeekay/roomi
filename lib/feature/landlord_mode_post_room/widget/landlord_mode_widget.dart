@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/option_model.dart';
-import 'package:roomy/feature/tenant_mode_listing/widget/filter_widget.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 mixin LandlordModeWidget {
@@ -12,47 +11,6 @@ mixin LandlordModeWidget {
         text,
         style: AppWidget.simpleTextFieldStyle(
             fontSize: 13, height: 15.85, color: const Color(0xFF020433)),
-      ),
-    );
-  }
-
-  static Widget createOption(
-      {BuildContext context,
-      double width,
-      OptionModel optionOne,
-      OptionModel optionTwo,
-      OptionModel optionThree,
-      String routesOne,
-      String routesTwo,
-      String routesThree}) {
-    return SizedBox(
-      width: width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          routesOne == null
-              ? FilterWidget.createItemOption(optionModel: optionOne)
-              : GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(routesOne);
-                  },
-                  child: FilterWidget.createItemOption(optionModel: optionOne)),
-          routesTwo == null
-              ? FilterWidget.createItemOption(optionModel: optionTwo)
-              : GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(routesTwo);
-                  },
-                  child: FilterWidget.createItemOption(optionModel: optionTwo)),
-          routesThree == null
-              ? FilterWidget.createItemOption(optionModel: optionThree)
-              : GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(routesThree);
-                  },
-                  child:
-                      FilterWidget.createItemOption(optionModel: optionThree)),
-        ],
       ),
     );
   }

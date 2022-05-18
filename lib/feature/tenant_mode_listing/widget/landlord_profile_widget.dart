@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roomy/app/widget_support.dart';
+import 'package:roomy/feature/tenant_mode_listing/model/user_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/landlord_detail_widget.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/listing_full_width_widget.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/tenant_listing_widget.dart';
@@ -27,7 +28,7 @@ mixin LandlordProfileWidget {
     );
   }
 
-  static Widget createAboutMe({double width}) {
+  static Widget createAboutMe({double width, @required UserModel user}) {
     return Column(
       children: [
         Padding(
@@ -47,7 +48,7 @@ mixin LandlordProfileWidget {
                         color: const Color(0xFF020433)),
                   ),
                   Text(
-                    '36',
+                    user.age.toString(),
                     style: AppWidget.simpleTextFieldStyle(
                         height: 17.07,
                         fontSize: 14,
@@ -69,7 +70,7 @@ mixin LandlordProfileWidget {
                           color: const Color(0xFF020433)),
                     ),
                     Text(
-                      'Product Designer',
+                      user.occupation,
                       style: AppWidget.simpleTextFieldStyle(
                           height: 17.07,
                           fontSize: 14,
@@ -85,14 +86,15 @@ mixin LandlordProfileWidget {
         TenantListingWidget.createSubTitle(
             text: 'About me', top: 32, bottom: 16),
         LandlordDetailWidget.createReadMore(
-            text: 'Fashion photographer currently based in Italy.'
-                'I love to discovery culture and new paths | foodie | curious of the world'),
+          text: user.aboutUser,
+        ),
         LandlordDetailWidget.createLine(),
       ],
     );
   }
 
-  static Widget createMyHobby() {
+  static Widget createMyHobby(UserModel user) {
+    final len = user.questionnaires.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -103,31 +105,34 @@ mixin LandlordProfileWidget {
         LandlordDetailWidget.createLine(),
         TenantListingWidget.createSubTitle(
             text: 'Prefer Location', top: 32, bottom: 16),
-        LandlordDetailWidget.createText(text: 'New York', bottom: 24, top: 16),
+        LandlordDetailWidget.createText(
+            text: user.prefferedLocation, bottom: 24, top: 16),
         LandlordDetailWidget.createLine(),
         TenantListingWidget.createSubTitle(
             text: 'Interested in', top: 32, bottom: 16),
         LandlordDetailWidget.createText(
-            text: 'Travel - Film - Reading...', bottom: 24, top: 16),
+            text: user.questionnaires[len - 1]['attributes'].join(' - '),
+            bottom: 24,
+            top: 16),
         LandlordDetailWidget.createLine(),
         TenantListingWidget.createSubTitle(
             text: 'Questionaires', top: 32, bottom: 16),
         LandlordProfileWidget.createBoldText(
             input: 'How often do you clean your apartment?'),
-        LandlordProfileWidget.createText(input: 'Every few days'),
+        LandlordProfileWidget.createText(input: user.questionnaires[0]),
         LandlordProfileWidget.createBoldText(input: 'Do you smoke?'),
-        LandlordProfileWidget.createText(input: 'Yes'),
+        LandlordProfileWidget.createText(input: user.questionnaires[1]),
         LandlordProfileWidget.createBoldText(
             input: 'How do you feel about pets?'),
-        LandlordProfileWidget.createText(input: 'I live with a pet of my own!'),
+        LandlordProfileWidget.createText(input: user.questionnaires[2]),
         LandlordProfileWidget.createBoldText(input: 'How about guests?'),
-        LandlordProfileWidget.createText(input: 'Only during the day'),
+        LandlordProfileWidget.createText(input: user.questionnaires[3]),
         LandlordDetailWidget.createLine(),
       ],
     );
   }
 
-  static Widget createInfoProfile({double width}) {
+  static Widget createInfoProfile({double width, @required UserModel user}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -136,8 +141,8 @@ mixin LandlordProfileWidget {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                Image.asset(
-                  'images/tenant_mode/img_avatar_2@3x.png',
+                Image.network(
+                  user.imgAvt,
                   height: 80,
                   width: 80,
                   fit: BoxFit.fill,
@@ -157,7 +162,7 @@ mixin LandlordProfileWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16, bottom: 10),
               child: Text(
-                'Mokua Lawrence',
+                user.name,
                 style: AppWidget.boldTextFieldStyle(
                     height: 29.26,
                     fontSize: 24,
@@ -169,7 +174,7 @@ mixin LandlordProfileWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Landlord',
+                  user.type,
                   style: AppWidget.simpleTextFieldStyle(
                       height: 17.07,
                       fontSize: 14,
@@ -181,7 +186,7 @@ mixin LandlordProfileWidget {
                       fontSize: 18, height: 21.94),
                 ),
                 Text(
-                  'NY',
+                  user.prefferedLocation.substring(1, 2),
                   style: AppWidget.boldTextFieldStyle(
                       height: 17.07,
                       fontSize: 14,
@@ -191,7 +196,7 @@ mixin LandlordProfileWidget {
             )
           ],
         ),
-        createAboutMe(width: width),
+        createAboutMe(width: width, user: user),
         TenantListingWidget.createSubTitle(
             text: 'Social Connections', top: 32, bottom: 16),
         LandlordDetailWidget.createText(
@@ -221,7 +226,7 @@ mixin LandlordProfileWidget {
           ),
         ),
         LandlordDetailWidget.createLine(),
-        createMyHobby(),
+        createMyHobby(user),
         TenantListingWidget.createSubTitle(
             text: 'Room List', top: 32, bottom: 16),
       ],

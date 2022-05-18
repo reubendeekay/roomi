@@ -38,9 +38,7 @@ class _NotifyMessageScreenState extends State<NotifyMessageScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          MessageScreen(
-            listMessNotify: ListOption.listMessNotify,
-          ),
+          MessageScreen(),
           NotifyScreen(),
         ],
       ),

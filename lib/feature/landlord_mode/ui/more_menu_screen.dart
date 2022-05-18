@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
@@ -12,6 +13,7 @@ class MoreMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
+    final user = Provider.of<AuthProvider>(context, listen: false).user;
     return Container(
       width: double.infinity,
       height: height,
@@ -30,9 +32,7 @@ class MoreMenuScreen extends StatelessWidget {
                     Navigator.of(context).pushNamed(Routes.myProfileScreen);
                   },
                   child: MenuWidget.createHeader(
-                      user: Provider.of<AuthProvider>(context, listen: false)
-                          .user,
-                      height: constraints.maxHeight / 116 * 32),
+                      user: user, height: constraints.maxHeight / 116 * 32),
                 ),
               ),
               Container(
@@ -49,11 +49,11 @@ class MoreMenuScreen extends StatelessWidget {
                   itemCount: listOption.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () {
-                        if (index == 1) {
+                      onTap: () async {
+                        if (index == 0) {
                           Navigator.of(context)
                               .pushNamed(Routes.postRoomScreen);
-                        } else if (index == 2) {
+                        } else if (index == 1) {
                           Navigator.of(context)
                               .pushReplacementNamed(Routes.tenantModeScreen);
                         } else {

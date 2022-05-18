@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
@@ -5,6 +6,7 @@ import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/user_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/book_confirm_widget.dart';
 import 'package:roomy/providers/auth_provider.dart';
+import 'package:roomy/providers/tenant_provider.dart';
 
 class ChatLandlordBookConfirm extends StatefulWidget {
   const ChatLandlordBookConfirm({this.room});
@@ -77,7 +79,12 @@ class _ChatLandlordBookConfirmState extends State<ChatLandlordBookConfirm> {
                           booked
                               ? const SizedBox()
                               : GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
+                                    final uid =
+                                        FirebaseAuth.instance.currentUser.uid;
+                                    await Provider.of<TenantProvider>(context,
+                                            listen: false)
+                                        .addTenant(uid, widget.room.post.id);
                                     setState(() {
                                       booked = !booked;
                                     });

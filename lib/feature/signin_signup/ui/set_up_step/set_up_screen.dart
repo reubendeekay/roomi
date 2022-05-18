@@ -202,19 +202,19 @@ class _SetUpScreenState extends State<SetUpScreen> {
                             email: emailController.text,
                             gender: true,
                             isAdmin: true,
+                            occupation: jobController.text,
+                            maxRent: maxRent,
+                            workPlace: placeController.text,
+                            prefferedLocation: goingTo,
+                            age: 2022 -
+                                int.parse(
+                                    birthdayController.text.split(',')[1]),
                             imgAvt:
                                 'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
                             isLandlord: lookingFor == 'tenant' ? true : false,
                             name: fullNameController.text,
                             password: passwordController.text,
                             phoneNumber: phoneController.text,
-                            attributes: {
-                              'goingTo': goingTo,
-                              'maxRent': maxRent,
-                              'moveInDate': moveInDate,
-                              'job': jobController.text,
-                              'workPlace': placeController.text,
-                            },
                             type: lookingFor,
                           );
                           Provider.of<AuthProvider>(context, listen: false)

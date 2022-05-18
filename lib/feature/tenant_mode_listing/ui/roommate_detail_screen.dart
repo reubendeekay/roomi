@@ -3,7 +3,6 @@ import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/landlord_detail_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/sab_landlord_room_detail.dart';
-import 'package:roomy/feature/tenant_mode_listing/widget/similar_listing_widget.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/info_landlord_room_detail.dart';
 
 class RoommateDetailScreen extends StatelessWidget {
@@ -126,9 +125,6 @@ class RoommateDetailScreen extends StatelessWidget {
                                 hasSimilar: true,
                                 viewProfile: true,
                               ),
-                              SimilarListingWidget(
-                                similarList: similarList,
-                              )
                             ],
                           ),
                         ),

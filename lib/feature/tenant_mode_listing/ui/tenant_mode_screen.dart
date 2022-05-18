@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:roomy/common/bloc/connectivity/connectivity_bloc.dart';
 import 'package:roomy/common/bloc/connectivity/connectivity_event.dart';
-import 'package:roomy/common/constant/list_option.dart';
 import 'package:roomy/feature/landlord_mode/widget/landlord_mode_widget.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/item_nav_model.dart';
-import 'package:roomy/feature/tenant_mode_menu/ui/more_menu_screen.dart';
+import 'package:roomy/feature/tenant_mode_menu/ui/my_profile_screen.dart';
 import 'package:roomy/feature/tenant_mode_notification/ui/notify_message_screen.dart';
 import 'package:roomy/feature/tenant_mode_saved/ui/saved_room_screen.dart';
 import 'package:roomy/providers/auth_provider.dart';
@@ -16,14 +15,14 @@ import 'listing_screen.dart';
 
 class TenantModeScreen extends StatefulWidget {
   final List<Map<String, dynamic>> listOption = [
-    <String, dynamic>{
-      'icon': 'images/tenant_mode/ic_new_room@3x.png',
-      'title': 'Post Your Room',
-    },
-    <String, dynamic>{
-      'icon': 'images/tenant_mode/ic_switch@3x.png',
-      'title': 'Switch to Landlord Mode',
-    },
+    // <String, dynamic>{
+    //   'icon': 'images/tenant_mode/ic_new_room@3x.png',
+    //   'title': 'Post Your Room',
+    // },
+    // <String, dynamic>{
+    //   'icon': 'images/tenant_mode/ic_switch@3x.png',
+    //   'title': 'Switch to Landlord Mode',
+    // },
     <String, dynamic>{
       'icon': 'images/tenant_mode/ic_setting@3x.png',
       'title': 'Settings',
@@ -48,9 +47,7 @@ class _TenantModeScreenState extends State<TenantModeScreen> {
       ListingScreen(),
       SavedRoomScreen(),
       NotifyMessageScreen(),
-      SettingsScreen(
-        listOption: widget.listOption,
-      ),
+      MyProfileScreen(),
     ];
     listItemModel = [
       ItemNavModel(true, 'List', 'images/tenant_mode/ic_tab_list@3x.png'),
@@ -60,6 +57,7 @@ class _TenantModeScreenState extends State<TenantModeScreen> {
           false, 'Notification', 'images/tenant_mode/ic_notification@3x.png'),
       ItemNavModel(false, 'Menu', 'images/tenant_mode/ic_tab_menu@3x.png')
     ];
+
     super.initState();
   }
 

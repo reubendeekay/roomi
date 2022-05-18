@@ -31,7 +31,6 @@ import 'package:roomy/feature/tenant_mode_listing/bloc/list_option/bloc_list_opt
 import 'package:roomy/feature/tenant_mode_listing/bloc/map_view/bloc_map_view.dart';
 import 'package:roomy/feature/tenant_mode_listing/bloc/photo_detail/bloc_photo_detail.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/chat_landlord_screen.dart';
-import 'package:roomy/feature/tenant_mode_listing/ui/filter_screen.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/landlord_detail_screen.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/landlord_profile_screen.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/listing_map_view_screen.dart';
@@ -143,18 +142,7 @@ class RouteGenerator {
         return MaterialPageRoute<dynamic>(
             builder: (_) => ListingMapViewScreen());
         break;
-      case Routes.filterScreen:
-        return MaterialPageRoute<dynamic>(
-            builder: (_) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider<ListOptionBloc>(
-                        create: (context) => ListOptionBloc()),
-                    BlocProvider<ChooseItemBloc>(
-                        create: (context) => ChooseItemBloc()),
-                  ],
-                  child: FilterScreen(),
-                ));
-        break;
+
       case Routes.landlordDetailScreen:
         return MaterialPageRoute<dynamic>(
             builder: (_) => LandlordDetailScreen());

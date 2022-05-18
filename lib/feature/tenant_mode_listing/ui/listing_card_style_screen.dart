@@ -21,7 +21,7 @@ class _ListingCardStyleScreenState extends State<ListingCardStyleScreen> {
     return Scaffold(
       appBar: TenantListingWidget.createAppBarWidget(
           height: height, title: 'New York'),
-      body: ListPostWidget(listPost: DataTest.listPost),
+      body: const ListPostWidget(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: BlocBuilder<ConnectivityBloc, ConnectivityState>(
         builder: (context, state) {

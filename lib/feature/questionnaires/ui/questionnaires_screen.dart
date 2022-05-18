@@ -193,15 +193,20 @@ class _QuestionnairesScreenState extends State<QuestionnairesScreen> {
                                       BlocProvider.of<SelectOptionBloc>(context)
                                           .state;
                                   final questions = options.listSelected
-                                      .map((e) => e.toJson())
+                                      .map((e) => e.answer)
                                       .toList();
 
                                   final auth = Provider.of<AuthProvider>(
                                       context,
                                       listen: false);
-
+                                  List questionairres = [
+                                    ...auth.questions,
+                                  ];
                                   final user = auth.user;
-                                  user.questionnaires = questions;
+
+                                  questionairres.add({'attributes': questions});
+
+                                  user.questionnaires = questionairres;
                                   try {
                                     await auth.signUp(user);
                                   } catch (e) {

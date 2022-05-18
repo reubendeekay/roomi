@@ -31,8 +31,9 @@ class MyProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 24, right: 24),
                 child: Column(
                   children: [
-                    LandlordProfileWidget.createAboutMe(width: width),
-                    LandlordProfileWidget.createMyHobby(),
+                    LandlordProfileWidget.createAboutMe(
+                        width: width, user: user),
+                    LandlordProfileWidget.createMyHobby(user),
                     LandlordDetailWidget.createLine(),
                   ],
                 ),

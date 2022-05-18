@@ -26,7 +26,7 @@ class _ListingScreenState extends State<ListingScreen> {
     return Scaffold(
       appBar: TenantListingWidget.createAppBarWidget(
           height: height, title: 'Nairobi County,Kenya'),
-      body: ListPostWidget(listPost: DataTest.listPost),
+      body: const ListPostWidget(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: BlocBuilder<ConnectivityBloc, ConnectivityState>(
         builder: (context, state) {

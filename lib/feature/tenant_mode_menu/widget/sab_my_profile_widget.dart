@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:roomy/feature/tenant_mode_listing/widget/filter_widget.dart';
+import 'package:get/route_manager.dart';
+import 'package:roomy/feature/on_boarding/on_boarding_screen.dart';
 
 class SabMyProfileWidget extends StatefulWidget {
   const SabMyProfileWidget({this.height, this.listImage});
@@ -36,14 +38,17 @@ class _SabMyProfileWidgetState extends State<SabMyProfileWidget> {
         ),
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 24),
-          child: Image.asset(
-            'images/tenant_mode/ic_edit@3x.png',
-            width: 24,
-            height: 24,
-            color: Colors.white,
-          ),
+        TextButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Get.offAll(() => OnBoardingScreen());
+            },
+            child: const Text(
+              'Log Out',
+              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+            )),
+        const SizedBox(
+          width: 10,
         )
       ],
       flexibleSpace: Stack(
@@ -64,10 +69,6 @@ class _SabMyProfileWidgetState extends State<SabMyProfileWidget> {
               );
             },
           ),
-          Positioned(
-              bottom: 44,
-              child: FilterWidget.createIndicator(
-                  listImage: widget.listImage, currentImage: currentImage)),
           Positioned(
             child: Container(
               height: 20,

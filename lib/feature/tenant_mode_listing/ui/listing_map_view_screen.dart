@@ -1,15 +1,17 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
+import 'package:roomy/feature/tenant_mode_listing/model/post_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/google_map_widget.dart';
-import 'package:roomy/feature/tenant_mode_listing/widget/info_window.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/listing_full_width_widget.dart';
 import 'package:roomy/providers/post_provider.dart';
+import 'package:marker_icon/marker_icon.dart';
 
 import '../bloc/map_view/bloc_map_view.dart';
 import '../data_test.dart';
@@ -24,37 +26,30 @@ class _ListingMapViewScreenState extends State<ListingMapViewScreen> {
   int current = 0;
   int indexSelected = 0;
 
-  Future<void> create(
-      BuildContext context, List<Map<String, dynamic>> listOfMarker) async {
+  Future<void> create(BuildContext context, List<GeoPoint> listOfMarker,
+      List<PostModel> posts) async {
     for (int i = 0; i < listOfMarker.length; i++) {
       markers.add(Marker(
           markerId: MarkerId('$i'),
-          position: listOfMarker[i]['latLng'],
-          onTap: () {
-            listOfMarker[i]['selected'] = !listOfMarker[i]['selected'];
-            indexSelected = i;
-            BlocProvider.of<MapViewBloc>(context).add(SelectedPlaceEvent(
-                id: listOfMarker[i]['id'],
-                selected: listOfMarker[i]['selected']));
-            setState(() {});
-          },
-          icon: await CustomInfoWindow.customInfoWindow(
-              width: 80,
-              height: 70,
-              fontSize: 24,
-              price: listOfMarker[i]['price'],
-              backgroundColor: listOfMarker[i]['selected']
-                  ? const Color(0xFF0F73EE)
-                  : Colors.white,
-              text: listOfMarker[i]['selected']
-                  ? Colors.white
-                  : const Color(0xFF020433))));
+          position: LatLng(listOfMarker[i].latitude, listOfMarker[i].longitude),
+          icon: await MarkerIcon.downloadResizePictureCircle(
+            posts[i].images.first,
+            size: 120,
+            borderSize: 10,
+            addBorder: true,
+          )));
     }
   }
 
   @override
   void initState() {
-    create(context, DataTest.listOfMarker);
+    Future.delayed(Duration.zero, () {
+      final rooms = Provider.of<PostProvider>(context, listen: false).rooms;
+
+      create(context, rooms.map((e) => e.post.location).toList(),
+          rooms.map((e) => e.post).toList());
+    });
+
     super.initState();
   }
 
@@ -62,6 +57,7 @@ class _ListingMapViewScreenState extends State<ListingMapViewScreen> {
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
     final width = AppWidget.getWidthScreen(context);
+    final rooms = Provider.of<PostProvider>(context, listen: false).rooms;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -73,8 +69,8 @@ class _ListingMapViewScreenState extends State<ListingMapViewScreen> {
               bloc: BlocProvider.of<MapViewBloc>(context),
               builder: (ctx, state) {
                 if (state is MapViewSelectedState) {
-                  DataTest.listOfMarker = state.listOfMarker;
-                  create(context, DataTest.listOfMarker);
+                  create(context, rooms.map((e) => e.post.location).toList(),
+                      rooms.map((e) => e.post).toList());
                 }
                 return GoogleMapWidget(
                     width: width,

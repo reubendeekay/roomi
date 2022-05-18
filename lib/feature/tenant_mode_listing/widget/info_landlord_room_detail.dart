@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/common/route/routes.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
+import 'package:roomy/feature/tenant_mode_listing/ui/landlord_profile_screen.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/map_view_screen.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/tenant_listing_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -57,8 +59,7 @@ class InfoLandlordRoomDetail extends StatelessWidget {
             child: viewProfile
                 ? InkWell(
                     onTap: () {
-                      Navigator.of(context)
-                          .pushNamed(Routes.landlordProfileScreen);
+                      Get.to(() => LandlordProfileScreen(user: room.user));
                     },
                     child: TenantListingWidget.createListTile(
                         imgAvt: room.user.imgAvt,

@@ -194,7 +194,7 @@ class ChatProvider with ChangeNotifier {
   //////////////////////////////////////////////////////
   ///
   ///
-  Future<void> getChats() async {
+  Future<List<ChatTileModel>> getChats() async {
     final uid = FirebaseAuth.instance.currentUser.uid;
     List<ChatTileModel> users = [];
 
@@ -252,9 +252,8 @@ class ChatProvider with ChangeNotifier {
     });
     users.sort((a, b) => b.time.compareTo(a.time));
 
-    _contactedUsers = users;
-
     notifyListeners();
+    return _contactedUsers = users;
   }
 
   Future<List<ChatTileModel>> searchUser(String searchTerm) async {

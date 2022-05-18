@@ -32,26 +32,6 @@ class SetUpStepOne extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     switchStep(2);
-                    onChanged('Room');
-                  },
-                  child: StepOneWidget.createBoxStepOne(
-                      background: 'images/log_in/bg_1_step_1@3x.png',
-                      icon: 'images/log_in/ic_1_step_1@3x.png',
-                      title: 'Room'),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    switchStep(2);
-                    onChanged('Entire Place');
-                  },
-                  child: StepOneWidget.createBoxStepOne(
-                      background: 'images/log_in/bg_2_step_1@3x.png',
-                      icon: 'images/log_in/ic_2_step_1@3x.png',
-                      title: 'Entire Place'),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    switchStep(2);
                     onChanged('Roommate');
                   },
                   child: StepOneWidget.createBoxStepOne(

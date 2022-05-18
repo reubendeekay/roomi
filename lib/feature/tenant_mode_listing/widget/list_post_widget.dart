@@ -6,15 +6,31 @@ import 'package:roomy/common/route/routes.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/landlord_detail_screen.dart';
 import 'package:roomy/providers/post_provider.dart';
+import 'package:roomy/providers/wishlist_provider.dart';
 
 import 'item_post.dart';
 import 'listing_full_width_widget.dart';
 import 'tenant_listing_widget.dart';
 
 class ListPostWidget extends StatelessWidget {
-  const ListPostWidget({this.child, this.listPost});
+  const ListPostWidget(
+      {this.child, this.isSaved = false, this.isLandlord = false});
   final Widget child;
-  final List<Map<String, dynamic>> listPost;
+  final bool isSaved;
+  final bool isLandlord;
+
+  Future path(BuildContext context) {
+    if (isSaved) {
+      return Provider.of<WishlistProvider>(context, listen: false)
+          .getWishlist();
+    } else if (isLandlord) {
+      return Provider.of<PostProvider>(context, listen: false)
+          .fetcLandlordRooms();
+    }
+
+    return Provider.of<PostProvider>(context, listen: false).fetchRooms();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
@@ -24,8 +40,7 @@ class ListPostWidget extends StatelessWidget {
       width: double.infinity,
       color: const Color(0xFFF7F9FF),
       child: FutureBuilder<List<RoomModel>>(
-          future:
-              Provider.of<PostProvider>(context, listen: false).fetchRooms(),
+          future: path(context),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -49,9 +64,7 @@ class ListPostWidget extends StatelessWidget {
                         child: TenantListingWidget.createListTile(
                             imgAvt: snapshot.data[index].user.imgAvt,
                             name: snapshot.data[index].user.name,
-                            type: snapshot.data[index].user.isLandlord
-                                ? 'Landlord'
-                                : 'Tenant',
+                            type: snapshot.data[index].user.age.toString(),
                             male: snapshot.data[index].user.gender),
                       ),
                       ItemPost(

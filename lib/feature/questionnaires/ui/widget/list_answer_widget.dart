@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:roomy/feature/questionnaires/model/answer_model.dart';
 import 'package:roomy/feature/questionnaires/ui/widget/question_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roomy/feature/questionnaires/bloc/select_answer/bloc_select_answer.dart';
+import 'package:roomy/providers/auth_provider.dart';
 
 class ListAnswerWidget extends StatelessWidget {
   const ListAnswerWidget(
@@ -30,6 +32,10 @@ class ListAnswerWidget extends StatelessWidget {
                     ItemAnswerSelected(
                         answerModel: sampleData, indexItemSelected: index),
                   );
+
+                  Provider.of<AuthProvider>(context, listen: false)
+                      .questions
+                      .add(sampleData[index].answer);
                   await Future.delayed(const Duration(milliseconds: 500), () {
                     switchQuestion(currentQuestion);
                   });

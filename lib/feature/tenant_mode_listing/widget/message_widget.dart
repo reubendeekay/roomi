@@ -1,24 +1,28 @@
 import 'package:bubble/bubble.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:roomy/app/widget_support.dart';
+import 'package:roomy/feature/tenant_mode_listing/model/message_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/user_model.dart';
 
 class MessageWidget extends StatelessWidget {
-  const MessageWidget({this.message, this.user});
-  final Map<String, dynamic> message;
+  const MessageWidget({@required this.message, this.user});
+  final MessageModel message;
   final UserModel user;
   @override
   Widget build(BuildContext context) {
     final width = AppWidget.getWidthScreen(context);
+    final uid = FirebaseAuth.instance.currentUser.uid;
     return Padding(
       padding: const EdgeInsets.only(bottom: 25),
       child: Row(
-        mainAxisAlignment: message['sender'] == 'me'
+        mainAxisAlignment: message.senderId == uid
             ? MainAxisAlignment.end
             : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          message['sender'] == 'you'
+          message.senderId != uid
               ? Padding(
                   padding: const EdgeInsets.only(right: 4, bottom: 15),
                   child: Stack(
@@ -46,7 +50,7 @@ class MessageWidget extends StatelessWidget {
                 )
               : const SizedBox(),
           Column(
-            crossAxisAlignment: message['sender'] == 'me'
+            crossAxisAlignment: message.senderId == uid
                 ? CrossAxisAlignment.end
                 : CrossAxisAlignment.start,
             children: [
@@ -54,10 +58,10 @@ class MessageWidget extends StatelessWidget {
                 width: width / 4 * 2.5,
                 child: Bubble(
                   elevation: 0,
-                  alignment: message['sender'] == 'me'
+                  alignment: message.senderId == uid
                       ? Alignment.topRight
                       : Alignment.topLeft,
-                  color: message['sender'] == 'me'
+                  color: message.senderId == uid
                       ? const Color(0xFF0F73EE)
                       : const Color(0xFFF0F0F0),
                   padding: const BubbleEdges.only(
@@ -65,22 +69,22 @@ class MessageWidget extends StatelessWidget {
                   margin: const BubbleEdges.only(bottom: 4),
                   radius: const Radius.circular(10),
                   nipRadius: 0,
-                  nip: message['sender'] == 'you'
+                  nip: message.senderId != uid
                       ? BubbleNip.leftBottom
                       : BubbleNip.rightBottom,
                   child: Text(
-                    message['message'],
+                    message.message,
                     style: AppWidget.simpleTextFieldStyle(
                         height: 21,
                         fontSize: 14,
-                        color: message['sender'] == 'me'
+                        color: message.senderId == uid
                             ? Colors.white
                             : const Color(0xFF020433)),
                   ),
                 ),
               ),
               Text(
-                message['time'],
+                DateFormat('HH:mm').format(message.sentAt.toDate()),
                 style: AppWidget.simpleTextFieldStyle(
                     color: const Color(0xFF95A0B6),
                     height: 12.19,

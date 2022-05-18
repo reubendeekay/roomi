@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:roomy/common/bloc/like_post/bloc_like_post.dart';
 import 'package:roomy/feature/on_boarding/bloc/bloc_slider.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/post_model.dart';
-import 'package:roomy/feature/tenant_mode_listing/widget/filter_widget.dart';
+import 'package:roomy/providers/auth_provider.dart';
+import 'package:roomy/providers/wishlist_provider.dart';
 
 class ItemPost extends StatefulWidget {
   const ItemPost({this.post, this.height, this.index});
@@ -16,6 +19,13 @@ class ItemPost extends StatefulWidget {
 
 class _ItemPostState extends State<ItemPost> {
   int currentImage = 0;
+
+  bool isLiked() {
+    final userRef = Provider.of<AuthProvider>(context, listen: false).user;
+
+    return userRef.wishlist.contains(widget.post.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     final SliderBloc counterBloc = BlocProvider.of<SliderBloc>(context);
@@ -62,15 +72,14 @@ class _ItemPostState extends State<ItemPost> {
                             state.listPost[widget.index]['liked'];
                       }
                       return GestureDetector(
-                        onTap: () {
-                          widget.post.selected = !widget.post.selected;
-                          BlocProvider.of<LikePostBloc>(context).add(
-                              LikePostPressed(
-                                  liked: widget.post.selected,
-                                  id: widget.post.id));
+                        onTap: () async {
+                          await Provider.of<WishlistProvider>(context,
+                                  listen: false)
+                              .addToWishList(widget.post.id, isLiked());
+                          setState(() {});
                         },
                         child: Image.asset(
-                          widget.post.selected
+                          isLiked()
                               ? 'images/tenant_mode/ic_wishlist_active@3x.png'
                               : 'images/tenant_mode/ic_tab_bookmark@3x.png',
                           width: 22,
@@ -83,11 +92,6 @@ class _ItemPostState extends State<ItemPost> {
                     },
                   ),
                 ),
-                Positioned(
-                    bottom: 16,
-                    child: FilterWidget.createIndicator(
-                        currentImage: currentImage,
-                        listImage: widget.post.images)),
               ],
             );
           },

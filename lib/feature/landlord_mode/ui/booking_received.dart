@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:roomy/common/constant/list_option.dart';
 import 'package:roomy/feature/tenant_mode_notification/ui/message_screen.dart';
 
 class BookingReceived extends StatelessWidget {
@@ -7,8 +6,6 @@ class BookingReceived extends StatelessWidget {
   final List<Map<String, dynamic>> listBookReceived;
   @override
   Widget build(BuildContext context) {
-    return MessageScreen(
-      listMessNotify: ListOption.listBookReceived,
-    );
+    return MessageScreen();
   }
 }

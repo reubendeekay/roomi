@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roomy/feature/tenant_mode_listing/bloc/choose_item/bloc_choose_item.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/option_model.dart';
-import '../widget/filter_widget.dart';
+import 'package:roomy/feature/tenant_mode_listing/widget/filter_widget.dart';
 
 class ChooseItemWidget extends StatefulWidget {
   const ChooseItemWidget({this.sampleData, this.crossAxisCount, this.type});

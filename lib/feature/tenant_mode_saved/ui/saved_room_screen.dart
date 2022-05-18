@@ -56,9 +56,9 @@ class _SavedRoomScreenState extends State<SavedRoomScreen>
           title: 'Saved'),
       body: TabBarView(
         controller: _tabController,
-        children: [
+        children: const [
           ListPostWidget(
-            listPost: ListOption.listRoom,
+            isSaved: true,
           ),
         ],
       ),

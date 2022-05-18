@@ -19,7 +19,6 @@ class RoommateFindNew extends StatelessWidget {
           child: ListingFullWidthWidget.createInfoPostWidget(
             hasVerify: true,
           )),
-      listPost: ListOption.listRoommateFindNew,
     );
   }
 }

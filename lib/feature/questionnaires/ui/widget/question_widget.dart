@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:roomy/app/widget_support.dart';
 import '../../model/answer_model.dart';
 
-class QuestionWidget {
+mixin QuestionWidget {
   static Widget createAppBarWidget(
       {BuildContext context,
       double height,

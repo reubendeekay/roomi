@@ -1,11 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/common/route/routes.dart';
 import 'package:readmore/readmore.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/chat_landlord_screen.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/listing_full_width_widget.dart';
+import 'package:roomy/providers/chat_provider.dart';
 
 mixin LandlordDetailWidget {
   static Widget createText({String text, double top, double bottom}) {
@@ -72,7 +75,30 @@ mixin LandlordDetailWidget {
           Expanded(
               child: GestureDetector(
                   onTap: () {
-                    Get.to(() => ChatLandlordScreen(room: room));
+                    final users =
+                        Provider.of<ChatProvider>(context, listen: false)
+                            .contactedUsers;
+                    List<String> rooms = users.map<String>((e) {
+                      return e.chatRoomId.contains(
+                              FirebaseAuth.instance.currentUser.uid +
+                                  '_' +
+                                  room.user.id)
+                          ? FirebaseAuth.instance.currentUser.uid +
+                              '_' +
+                              room.user.id
+                          : room.user.id +
+                              '_' +
+                              FirebaseAuth.instance.currentUser.uid;
+                    }).toList();
+
+                    Get.to(() => ChatLandlordScreen(
+                          room: room,
+                          chatRoomId: rooms.isEmpty
+                              ? FirebaseAuth.instance.currentUser.uid +
+                                  '_' +
+                                  room.user.id
+                              : rooms.first,
+                        ));
                   },
                   child:
                       AppWidget.typeButtonStartAction(input: 'REQUEST CHAT'))),

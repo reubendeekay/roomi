@@ -9,6 +9,7 @@ class AuthProvider with ChangeNotifier {
   bool isOnline = false;
   UserModel _user;
   UserModel get user => _user;
+  List questions = [];
 
   void setUser(UserModel newUser) {
     _user = newUser;
@@ -46,7 +47,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getUser() async {
+  Future<UserModel> getUser() async {
     final uid = FirebaseAuth.instance.currentUser.uid;
     try {
       final userResults =
@@ -57,6 +58,7 @@ class AuthProvider with ChangeNotifier {
       rethrow;
     }
     notifyListeners();
+    return _user;
   }
 
   Future<void> getOnlineStatus() async {

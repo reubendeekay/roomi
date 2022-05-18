@@ -5,8 +5,6 @@ import 'package:roomy/feature/tenant_mode_notification/ui/message_screen.dart';
 class RequestPending extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MessageScreen(
-      listMessNotify: ListOption.listPending,
-    );
+    return MessageScreen();
   }
 }

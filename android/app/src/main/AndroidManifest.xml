@@ -13,7 +13,7 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
     <application
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:label="Roomi">
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAPklRTj-WCHp_Oi9qTvkIHmLcCAMNqel8"/>

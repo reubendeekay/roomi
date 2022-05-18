@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:roomy/feature/tenant_mode_listing/widget/filter_widget.dart';
 
 class SabLandlordProfile extends StatefulWidget {
   const SabLandlordProfile({this.height, this.listImage});
@@ -70,17 +69,13 @@ class _SabLandlordProfileState extends State<SabLandlordProfile> {
               });
             },
             itemBuilder: (context, index) {
-              return Image.asset(
+              return Image.network(
                 widget.listImage[index],
                 width: double.infinity,
                 fit: BoxFit.fill,
               );
             },
           ),
-          Positioned(
-              bottom: 44,
-              child: FilterWidget.createIndicator(
-                  listImage: widget.listImage, currentImage: currentImage)),
           Positioned(
             child: Container(
               height: 20,

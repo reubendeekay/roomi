@@ -17,9 +17,14 @@ class UserModel extends Equatable {
       this.phoneNumber,
       this.dateOfBirth,
       this.questionnaires,
-      this.attributes,
+      this.prefferedLocation,
+      this.occupation,
       this.isAdmin,
-      this.isLandlord});
+      this.isLandlord,
+      this.maxRent,
+      this.moveInDate,
+      this.workPlace,
+      this.wishlist});
   String id;
   String imgAvt;
   String name;
@@ -28,11 +33,17 @@ class UserModel extends Equatable {
   bool gender;
   String type;
   String aboutUser;
-  List questionnaires;
-  Map<String, dynamic> attributes;
+  List questionnaires = [];
+  List<dynamic> wishlist = [];
   String site;
   String email;
+  String prefferedLocation;
+  String occupation;
   String phoneNumber;
+  String maxRent;
+  String workPlace;
+  String moveInDate;
+
   String password;
   Timestamp createdAt;
   bool isLandlord;
@@ -58,8 +69,13 @@ class UserModel extends Equatable {
         'profilePic': imgAvt,
         'createdAt': createdAt,
         'questionnaires': questionnaires,
-        'attributes': attributes,
         'dateOfBirth': dateOfBirth,
+        'prefferedLocation': prefferedLocation,
+        'occupation': occupation,
+        'maxRent': maxRent,
+        'workPlace': workPlace,
+        'moveInDate': moveInDate,
+        'wishlist': wishlist,
       };
 
   factory UserModel.fromJson(dynamic json) {
@@ -79,8 +95,13 @@ class UserModel extends Equatable {
       isLandlord: json['isLandlord'],
       questionnaires: json['questionnaires'],
       type: json['type'],
-      attributes: json['attributes'],
       dateOfBirth: json['dateOfBirth'],
+      prefferedLocation: json['prefferedLocation'],
+      occupation: json['occupation'],
+      maxRent: json['maxRent'],
+      workPlace: json['workPlace'],
+      moveInDate: json['moveInDate'],
+      wishlist: json['wishlist'],
     );
   }
 }

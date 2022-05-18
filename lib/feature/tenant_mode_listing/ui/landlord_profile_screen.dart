@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/feature/landlord_mode/widget/bottom_nav_widget.dart';
+import 'package:roomy/feature/tenant_mode_listing/model/user_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/landlord_profile_widget.dart';
-import 'package:roomy/feature/tenant_mode_listing/widget/similar_listing_widget.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/sab_landlord_profile.dart';
+import 'package:roomy/providers/auth_provider.dart';
 
 class LandlordProfileScreen extends StatefulWidget {
+  const LandlordProfileScreen({Key key, @required this.user}) : super(key: key);
+
+  final UserModel user;
   @override
   _LandlordProfileScreenState createState() => _LandlordProfileScreenState();
 }
@@ -45,7 +50,7 @@ class _LandlordProfileScreenState extends State<LandlordProfileScreen> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SabLandlordProfile(height: height, listImage: listImage),
+          SabLandlordProfile(height: height, listImage: [widget.user.imgAvt]),
           SliverList(
               delegate: SliverChildListDelegate([
             Column(
@@ -59,11 +64,8 @@ class _LandlordProfileScreenState extends State<LandlordProfileScreen> {
                           padding: const EdgeInsets.only(
                               top: 4, left: 24, right: 24),
                           child: LandlordProfileWidget.createInfoProfile(
-                              width: width),
+                              width: width, user: widget.user),
                         ),
-                        SimilarListingWidget(
-                          similarList: similarList,
-                        )
                       ],
                     ),
                   ),
@@ -73,10 +75,6 @@ class _LandlordProfileScreenState extends State<LandlordProfileScreen> {
           ]))
         ],
       ),
-      bottomNavigationBar: const SafeArea(
-          child: BottomNavWidget(
-        colorButton: Color(0xFF95A0B6),
-      )),
     );
   }
 }

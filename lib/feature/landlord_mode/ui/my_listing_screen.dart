@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/feature/tenant_mode_saved/widget/saved_widget.dart';
 import 'my_listing_active.dart';
-import 'my_listing_inactive.dart';
-import 'my_listing_incomplete.dart';
 
 class MyListingScreen extends StatefulWidget {
   @override

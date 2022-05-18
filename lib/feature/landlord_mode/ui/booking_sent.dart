@@ -7,8 +7,6 @@ class BookingSent extends StatelessWidget {
   final List<Map<String, dynamic>> listBookSent;
   @override
   Widget build(BuildContext context) {
-    return MessageScreen(
-      listMessNotify: ListOption.listBookSent,
-    );
+    return MessageScreen();
   }
 }

@@ -4,7 +4,6 @@ import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/landlord_detail_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/sab_landlord_room_detail.dart';
-import 'package:roomy/feature/tenant_mode_listing/widget/similar_listing_widget.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/info_landlord_room_detail.dart';
 
 class LandlordDetailScreen extends StatelessWidget {
@@ -115,7 +114,10 @@ class LandlordDetailScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             AppBarLandlordRoomDetail(
-                height: height, listImage: room.post.images),
+              height: height,
+              listImage: room.post.images,
+              id: room.post.id,
+            ),
             SliverList(
               delegate: SliverChildListDelegate([
                 Column(
