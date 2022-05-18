@@ -10,6 +10,7 @@ import 'package:roomy/feature/tenant_mode_listing/model/post_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/google_map_widget.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/listing_full_width_widget.dart';
+import 'package:roomy/providers/auth_provider.dart';
 import 'package:roomy/providers/post_provider.dart';
 import 'package:marker_icon/marker_icon.dart';
 
@@ -58,6 +59,7 @@ class _ListingMapViewScreenState extends State<ListingMapViewScreen> {
     final height = AppWidget.getHeightScreen(context);
     final width = AppWidget.getWidthScreen(context);
     final rooms = Provider.of<PostProvider>(context, listen: false).rooms;
+    final user = Provider.of<AuthProvider>(context, listen: false).user;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -73,9 +75,8 @@ class _ListingMapViewScreenState extends State<ListingMapViewScreen> {
                       rooms.map((e) => e.post).toList());
                 }
                 return GoogleMapWidget(
-                    width: width,
-                    markers: markers,
-                    listOfMarker: DataTest.listOfMarker);
+                  width: width,
+                );
               },
             ),
           ),
@@ -84,7 +85,7 @@ class _ListingMapViewScreenState extends State<ListingMapViewScreen> {
             width: double.infinity,
             child: FutureBuilder<List<RoomModel>>(
                 future: Provider.of<PostProvider>(context, listen: false)
-                    .fetchRooms(),
+                    .fetchRooms(user),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Card();

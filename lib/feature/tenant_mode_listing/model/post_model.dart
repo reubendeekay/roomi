@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geocoder2/geocoder2.dart';
@@ -48,6 +50,7 @@ class PostModel {
   Timestamp createdAt;
 
   List<dynamic> ammenities = [];
+  List<File> imageFiles = [];
   List<dynamic> rules = [];
 
   factory PostModel.fromJson(dynamic json) {

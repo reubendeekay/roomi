@@ -84,7 +84,7 @@ class _ItemPostState extends State<ItemPost> {
                               : 'images/tenant_mode/ic_tab_bookmark@3x.png',
                           width: 22,
                           height: 20,
-                          color: widget.post.selected
+                          color: isLiked()
                               ? const Color(0xFFFC2F39)
                               : Colors.white,
                         ),

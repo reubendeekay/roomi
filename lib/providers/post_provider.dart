@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/post_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
@@ -27,6 +30,8 @@ class PostProvider with ChangeNotifier {
   String type;
 
   List<String> ammenities = [];
+  List<File> imageFiles = [];
+
   List<String> rules = [];
   //---------------------------------------------------------
   List<RoomModel> _rooms = [];
@@ -37,14 +42,29 @@ class PostProvider with ChangeNotifier {
   Future<void> postRoom(PostModel room) async {
     final id = roomsCollection.doc().id;
     room.id = id;
+    List<String> urls = [];
+
+    for (File image in imageFiles) {
+      final ref = await FirebaseStorage.instance
+          .ref('images/$id/posts/${DateTime.now().toIso8601String()}')
+          .putFile(image);
+      urls.add(await ref.ref.getDownloadURL());
+    }
+    room.images = urls;
     await roomsCollection.doc(room.id).set(room.toJson());
   }
 
-  Future<List<RoomModel>> fetchRooms() async {
-    final snapshot = await roomsCollection.get();
+  Future<List<RoomModel>> fetchRooms(UserModel you) async {
+    final snap = await roomsCollection.get();
     final List<UserModel> users = [];
+    final snapshot = snap.docs.where((element) =>
+        // element['prefferedGender'] == you.gender &&
+        // (you.questionnaires[2].contains('No') &&
+        //     element['rules'].contains('No')) &&
+        double.parse(element['rentAmount'].toString()) <
+        double.parse(you.maxRent.toString()));
 
-    final posts = snapshot.docs.map((doc) => PostModel.fromJson(doc)).toList();
+    final posts = snapshot.map((doc) => PostModel.fromJson(doc)).toList();
 
     for (PostModel post in posts) {
       await FirebaseFirestore.instance

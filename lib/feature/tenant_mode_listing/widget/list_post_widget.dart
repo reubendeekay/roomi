@@ -5,6 +5,7 @@ import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/common/route/routes.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/landlord_detail_screen.dart';
+import 'package:roomy/providers/auth_provider.dart';
 import 'package:roomy/providers/post_provider.dart';
 import 'package:roomy/providers/wishlist_provider.dart';
 
@@ -28,7 +29,8 @@ class ListPostWidget extends StatelessWidget {
           .fetcLandlordRooms();
     }
 
-    return Provider.of<PostProvider>(context, listen: false).fetchRooms();
+    return Provider.of<PostProvider>(context, listen: false)
+        .fetchRooms(Provider.of<AuthProvider>(context, listen: false).user);
   }
 
   @override

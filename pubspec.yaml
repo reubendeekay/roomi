@@ -26,6 +26,7 @@ dependencies:
   cupertino_icons: 1.0.0
   data_connection_checker: ^0.3.4
   equatable: 1.2.5
+  file_picker: ^4.5.1
   firebase: ^9.0.2
   firebase_auth: ^3.3.16
   firebase_core: ^1.15.0

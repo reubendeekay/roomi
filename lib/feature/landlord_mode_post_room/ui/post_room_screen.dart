@@ -39,6 +39,7 @@ class _PostRoomScreenState extends State<PostRoomScreen> {
   int currentImage;
   bool isFurnished;
   String type;
+  LatLng location;
 
   List<String> ammenities = [];
   List<String> rules = [];
@@ -97,7 +98,11 @@ class _PostRoomScreenState extends State<PostRoomScreen> {
         children: [
           SelectLocationStep(
             switchStep: switchStep,
-            listMarker: listMarker,
+            onLocation: (val) {
+              setState(() {
+                location = val;
+              });
+            },
           ),
           PropertyTypeStep(),
           GestureDetector(
@@ -177,7 +182,7 @@ class _PostRoomScreenState extends State<PostRoomScreen> {
                       deposit: depositController.text,
                       createdAt: Timestamp.now(),
                       images: [],
-                      location: GeoPoint(21.037763, 105.834160),
+                      location: GeoPoint(location.latitude, location.longitude),
                       rentAmount: rentController.text,
                       rules: post.rules,
                       title: post.title,

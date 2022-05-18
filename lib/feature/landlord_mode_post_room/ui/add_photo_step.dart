@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
@@ -5,6 +7,7 @@ import 'package:roomy/feature/signin_signup/ui/set_up_step/widget/set_up_step_wi
 import 'package:roomy/feature/signin_signup/ui/set_up_step/widget/step_four_widget.dart';
 import 'package:roomy/common/widget/text_field_about_info.dart';
 import 'package:roomy/providers/post_provider.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AddPhotoStep extends StatefulWidget {
   const AddPhotoStep();
@@ -22,6 +25,7 @@ class _AddPhotoStepState extends State<AddPhotoStep> {
 
   FocusNode desNode = FocusNode();
   FocusNode titNode = FocusNode();
+  List<File> imageFiles = [];
 
   @override
   Widget build(BuildContext context) {
@@ -92,12 +96,35 @@ class _AddPhotoStepState extends State<AddPhotoStep> {
                   crossAxisSpacing: 24,
                   mainAxisSpacing: 24,
                 ),
-                itemCount: listImage.length,
+                itemCount: imageFiles.length + 1,
                 itemBuilder: (context, index) {
-                  return Image.asset(
-                    listImage[index],
-                    fit: BoxFit.fill,
-                  );
+                  return index == 0
+                      ? InkWell(
+                          onTap: () async {
+                            FilePickerResult result = await FilePicker.platform
+                                .pickFiles(allowMultiple: true);
+
+                            if (result != null) {
+                              List<File> files = result.paths
+                                  .map((path) => File(path))
+                                  .toList();
+                              setState(() {
+                                imageFiles = files;
+                                post.imageFiles = files;
+                              });
+                            } else {
+                              // User canceled the picker
+                            }
+                          },
+                          child: Image.asset(
+                            listImage[index],
+                            fit: BoxFit.fill,
+                          ),
+                        )
+                      : Image.file(
+                          imageFiles[index - 1],
+                          fit: BoxFit.fill,
+                        );
                 },
               ),
             ),

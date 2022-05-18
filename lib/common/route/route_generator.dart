@@ -7,7 +7,6 @@ import 'package:roomy/feature/landlord_mode/ui/find_new_detail_screen.dart';
 import 'package:roomy/feature/landlord_mode/ui/landlord_mode_screen.dart';
 import 'package:roomy/feature/landlord_mode_post_room/bloc/roommate_preference/bloc_roommate_preference.dart';
 import 'package:roomy/feature/landlord_mode_post_room/ui/post_room_screen.dart';
-import 'package:roomy/feature/landlord_mode_post_room/ui/preview_post_screen.dart';
 import 'package:roomy/feature/landlord_mode_post_room/ui/your_post_completed_screen.dart';
 import 'package:roomy/feature/on_boarding/on_boarding_screen.dart';
 import 'package:roomy/feature/questionnaires/bloc/select_answer/bloc_select_answer.dart';
@@ -197,9 +196,7 @@ class RouteGenerator {
             builder: (_) => BlocProvider<RoommatePrfBloc>(
                 create: (context) => RoommatePrfBloc(),
                 child: PostRoomScreen()));
-        break;
-      case Routes.previewPostScreen:
-        return MaterialPageRoute<dynamic>(builder: (_) => PreviewPostScreen());
+
         break;
       case Routes.yourPostCompletedScreen:
         return MaterialPageRoute<dynamic>(

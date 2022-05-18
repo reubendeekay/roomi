@@ -5,13 +5,8 @@ import 'package:roomy/providers/location_provider.dart';
 
 class CustomGoogleMap extends StatefulWidget {
   const CustomGoogleMap(
-      {this.markers,
-      this.listOfMarker,
-      this.circles,
-      this.zoom,
-      this.zoomGesturesEnabled});
+      {this.markers, this.circles, this.zoom, this.zoomGesturesEnabled, b});
   final Set<Marker> markers;
-  final List<Map<String, dynamic>> listOfMarker;
   final Set<Circle> circles;
   final double zoom;
   final bool zoomGesturesEnabled;

@@ -98,7 +98,11 @@ class RoommateDetailScreen extends StatelessWidget {
     return Scaffold(
         body: CustomScrollView(
           slivers: [
-            AppBarLandlordRoomDetail(height: height, listImage: listImage),
+            AppBarLandlordRoomDetail(
+              height: height,
+              listImage: listImage,
+              id: '',
+            ),
             SliverList(
               delegate: SliverChildListDelegate([
                 Column(

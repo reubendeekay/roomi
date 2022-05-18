@@ -1,14 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:marker_icon/marker_icon.dart';
+import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/common/route/routes.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:roomy/feature/tenant_mode_listing/model/post_model.dart';
+import 'package:roomy/providers/post_provider.dart';
 import 'custom_google_map.dart';
 
-class GoogleMapWidget extends StatelessWidget {
-  const GoogleMapWidget({this.width, this.listOfMarker, this.markers});
+class GoogleMapWidget extends StatefulWidget {
+  const GoogleMapWidget({
+    this.width,
+  });
   final double width;
-  final Set<Marker> markers;
-  final List<Map<String, dynamic>> listOfMarker;
+
+  @override
+  State<GoogleMapWidget> createState() => _GoogleMapWidgetState();
+}
+
+class _GoogleMapWidgetState extends State<GoogleMapWidget> {
+  Set<Marker> markers = <Marker>{};
+  int current = 0;
+  int indexSelected = 0;
+
+  Future<void> create(BuildContext context, List<GeoPoint> listOfMarker,
+      List<PostModel> posts) async {
+    for (int i = 0; i < listOfMarker.length; i++) {
+      markers.add(Marker(
+          markerId: MarkerId('$i'),
+          position: LatLng(listOfMarker[i].latitude, listOfMarker[i].longitude),
+          icon: await MarkerIcon.downloadResizePictureCircle(
+            posts[i].images.first,
+            size: 120,
+            borderSize: 10,
+            addBorder: true,
+          )));
+    }
+  }
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      final rooms = Provider.of<PostProvider>(context, listen: false).rooms;
+
+      create(context, rooms.map((e) => e.post.location).toList(),
+          rooms.map((e) => e.post).toList());
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +58,6 @@ class GoogleMapWidget extends StatelessWidget {
       children: [
         CustomGoogleMap(
           markers: markers,
-          listOfMarker: listOfMarker,
         ),
         Positioned(
           top: 60,

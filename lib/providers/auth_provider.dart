@@ -38,6 +38,10 @@ class AuthProvider with ChangeNotifier {
       print(e.toString());
     }
     newUser.id = signUpUser.user.uid;
+    if (newUser.imgAvt == null) {
+      newUser.imgAvt =
+          "https://media.istockphoto.com/vectors/user-icon-people-icon-isolated-on-white-background-vector-vector-id1210939712?k=20&m=1210939712&s=612x612&w=0&h=xJqEPQnMiNofprbLXWdEtJQ75QL79lQ5N76J4JOdTIM=";
+    }
     await FirebaseFirestore.instance
         .collection('users')
         .doc(signUpUser.user?.uid)
