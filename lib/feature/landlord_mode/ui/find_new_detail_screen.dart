@@ -6,7 +6,6 @@ import 'package:roomy/feature/tenant_mode_listing/ui/map_view_screen.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/custom_google_map.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/landlord_detail_widget.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/sab_landlord_profile.dart';
-import 'package:roomy/feature/tenant_mode_listing/widget/similar_listing_widget.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/tenant_listing_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -128,10 +127,6 @@ class FindNewDetailScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SimilarListingWidget(
-                      hasVerify: false,
-                      similarList: similarList,
-                    )
                   ],
                 ),
               )

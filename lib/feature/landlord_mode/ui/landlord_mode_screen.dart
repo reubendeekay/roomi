@@ -26,7 +26,7 @@ class LandlordModeScreen extends StatefulWidget {
     },
     <String, dynamic>{
       'icon': 'images/tenant_mode/ic_setting@3x.png',
-      'title': 'Settings',
+      'title': 'Sign out',
     },
   ];
   @override

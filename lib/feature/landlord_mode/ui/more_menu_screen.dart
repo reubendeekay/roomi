@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/common/route/routes.dart';
+import 'package:roomy/feature/on_boarding/on_boarding_screen.dart';
 import 'package:roomy/feature/tenant_mode_menu/widget/menu_widget.dart';
 import 'package:roomy/providers/auth_provider.dart';
 
@@ -56,8 +58,9 @@ class MoreMenuScreen extends StatelessWidget {
                         } else if (index == 1) {
                           Navigator.of(context)
                               .pushReplacementNamed(Routes.tenantModeScreen);
-                        } else {
-                          print(index);
+                        } else if (index == 3) {
+                          await FirebaseAuth.instance.signOut();
+                          Get.offAll(() => OnBoardingScreen());
                         }
                       },
                       child: MenuWidget.createItemOption(

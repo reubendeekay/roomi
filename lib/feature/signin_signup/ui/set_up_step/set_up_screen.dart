@@ -192,7 +192,7 @@ class _SetUpScreenState extends State<SetUpScreen> {
                     }
                   },
                   child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
                         if (checkState) {
                           final user = UserModel(
@@ -219,7 +219,11 @@ class _SetUpScreenState extends State<SetUpScreen> {
                           );
                           Provider.of<AuthProvider>(context, listen: false)
                               .setUser(user);
-
+                          if (user.isAdmin) {
+                            await Provider.of<AuthProvider>(context,
+                                    listen: false)
+                                .signUp(user);
+                          }
                           Navigator.of(context)
                               .pushNamed(Routes.setUpSuccessScreen);
                           checkState = false;
