@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
@@ -17,6 +19,7 @@ class UserModel extends Equatable {
       this.phoneNumber,
       this.dateOfBirth,
       this.questionnaires,
+      this.imageFile,
       this.prefferedLocation,
       this.occupation,
       this.isAdmin,
@@ -29,6 +32,7 @@ class UserModel extends Equatable {
   String imgAvt;
   String name;
   int age;
+  File imageFile;
   String dateOfBirth;
   bool gender;
   String type;
@@ -101,7 +105,7 @@ class UserModel extends Equatable {
       maxRent: json['maxRent'],
       workPlace: json['workPlace'],
       moveInDate: json['moveInDate'],
-      wishlist: json['wishlist'],
+      wishlist: json['wishlist'] ?? [],
     );
   }
 }

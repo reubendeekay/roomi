@@ -6,9 +6,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/common/route/routes.dart';
+import 'package:roomy/feature/landlord_mode/ui/landlord_mode_screen.dart';
 import 'package:roomy/feature/landlord_mode_post_room/bloc/roommate_preference/bloc_roommate_preference.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/post_model.dart';
@@ -173,7 +175,7 @@ class _PostRoomScreenState extends State<PostRoomScreen> {
                   step: 6,
                   hasShadow: true),
               LandlordModeWidget.createContainerNav(
-                  input: 'PREVIEW ',
+                  input: 'POST ',
                   context: context,
                   // route: Routes.previewPostScreen,
                   onTap: () async {
@@ -200,7 +202,7 @@ class _PostRoomScreenState extends State<PostRoomScreen> {
 
                     await post.postRoom(room);
                     print(room.toJson());
-                    Navigator.of(context).pushNamed(Routes.previewPostScreen);
+                    Get.to(() => LandlordModeScreen());
                   },
                   hasShadow: true),
             ],

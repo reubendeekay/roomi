@@ -6,6 +6,8 @@ import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/common/route/routes.dart';
 import 'package:roomy/feature/on_boarding/on_boarding_screen.dart';
 import 'package:roomy/feature/tenant_mode_menu/widget/menu_widget.dart';
+import 'package:roomy/feature/tenant_mode_notification/ui/message_screen.dart';
+import 'package:roomy/feature/tenant_mode_notification/ui/notify_message_screen.dart';
 import 'package:roomy/providers/auth_provider.dart';
 
 class MoreMenuScreen extends StatelessWidget {
@@ -56,8 +58,7 @@ class MoreMenuScreen extends StatelessWidget {
                           Navigator.of(context)
                               .pushNamed(Routes.postRoomScreen);
                         } else if (index == 1) {
-                          Navigator.of(context)
-                              .pushReplacementNamed(Routes.tenantModeScreen);
+                          Get.to(() => NotifyMessageScreen());
                         } else if (index == 3) {
                           await FirebaseAuth.instance.signOut();
                           Get.offAll(() => OnBoardingScreen());

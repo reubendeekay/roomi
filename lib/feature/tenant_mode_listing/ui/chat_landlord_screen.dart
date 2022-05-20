@@ -155,14 +155,18 @@ class _ChatLandlordScreenState extends State<ChatLandlordScreen> {
                         onTap: () async {
                           Provider.of<ChatProvider>(context, listen: false)
                               .sendMessage(
-                                  widget.room.user.id,
+                                  widget.room == null
+                                      ? widget.user.id
+                                      : widget.room.user.id,
                                   MessageModel(
                                     mediaFiles: [],
                                     mediaType: '',
                                     message: message.text,
                                     senderId:
                                         FirebaseAuth.instance.currentUser.uid,
-                                    receiverId: widget.room.user.id,
+                                    receiverId: widget.room == null
+                                        ? widget.user.id
+                                        : widget.room.user.id,
                                   ));
                           message.clear();
                         },

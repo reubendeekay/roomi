@@ -22,7 +22,7 @@ class _MessageScreenState extends State<MessageScreen> {
         future: Provider.of<ChatProvider>(context, listen: false).getChats(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }

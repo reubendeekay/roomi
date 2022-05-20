@@ -18,10 +18,10 @@ class TenantProvider with ChangeNotifier {
     final uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection('tenancy')
-        .doc(uid)
+        .doc(user)
         .collection('tenants')
         .add({
-      'user': user,
+      'user': uid,
       'room': room,
     });
     notifyListeners();

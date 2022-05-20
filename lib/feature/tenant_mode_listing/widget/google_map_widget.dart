@@ -24,18 +24,20 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget> {
   int current = 0;
   int indexSelected = 0;
 
-  Future<void> create(BuildContext context, List<GeoPoint> listOfMarker,
-      List<PostModel> posts) async {
-    for (int i = 0; i < listOfMarker.length; i++) {
+  Future<void> create(BuildContext context, List<PostModel> posts) async {
+    final rooms = Provider.of<PostProvider>(context, listen: false).rooms;
+    for (int i = 0; i < rooms.length; i++) {
       markers.add(Marker(
           markerId: MarkerId('$i'),
-          position: LatLng(listOfMarker[i].latitude, listOfMarker[i].longitude),
+          position: LatLng(rooms[i].post.location.latitude,
+              rooms[i].post.location.longitude),
           icon: await MarkerIcon.downloadResizePictureCircle(
             posts[i].images.first,
             size: 120,
             borderSize: 10,
             addBorder: true,
           )));
+      setState(() {});
     }
   }
 
@@ -44,8 +46,7 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget> {
     Future.delayed(Duration.zero, () {
       final rooms = Provider.of<PostProvider>(context, listen: false).rooms;
 
-      create(context, rooms.map((e) => e.post.location).toList(),
-          rooms.map((e) => e.post).toList());
+      create(context, rooms.map((e) => e.post).toList());
     });
 
     super.initState();

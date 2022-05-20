@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:roomy/admin/admin.dart';
 import 'package:roomy/feature/landlord_mode/ui/landlord_mode_screen.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/tenant_mode_screen.dart';
 import 'package:roomy/providers/auth_provider.dart';
-import 'package:roomy/providers/location_provider.dart';
 
-class InitialLoading extends StatefulWidget {
+class InitialLoadingScreen extends StatefulWidget {
+  const InitialLoadingScreen({Key key}) : super(key: key);
+
   @override
-  State<InitialLoading> createState() => _InitialLoadingState();
+  State<InitialLoadingScreen> createState() => _InitialLoadingScreenState();
 }
 
-class _InitialLoadingState extends State<InitialLoading> {
+class _InitialLoadingScreenState extends State<InitialLoadingScreen> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     Future.delayed(Duration.zero, () async {
-      await Provider.of<LocationProvider>(context, listen: false)
-          .getCurrentLocation();
-    });
-    Provider.of<AuthProvider>(context, listen: false).getUser().then((value) {
-      if (value.isLandlord) {
+      final user =
+          await Provider.of<AuthProvider>(context, listen: false).getUser();
+      if (user.isAdmin) {
+        Get.off(() => AdminDashboard());
+      } else if (user.isLandlord) {
         Get.off(() => LandlordModeScreen());
       } else {
-        Get.to(() => TenantModeScreen());
+        Get.off(() => TenantModeScreen());
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),

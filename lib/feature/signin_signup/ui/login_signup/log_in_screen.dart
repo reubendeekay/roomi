@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/common/constant/env.dart';
@@ -9,6 +10,7 @@ import 'package:roomy/common/widget/text_form_field_widget.dart';
 import 'package:roomy/common/widget/web_view_privacy.dart';
 import 'package:roomy/feature/signin_signup/bloc/sign_in/bloc_signin.dart';
 import 'package:roomy/feature/signin_signup/ui/set_up_step/widget/set_up_step_widget.dart';
+import 'package:roomy/feature/tenant_mode_listing/ui/tenant_mode_screen.dart';
 import 'package:roomy/providers/auth_provider.dart';
 
 import '../login_signup/form/form_login.dart';
@@ -175,6 +177,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         await Provider.of<AuthProvider>(context, listen: false)
                             .signIn(_emailController.text.trim(),
                                 _passwordController.text.trim());
+                        Get.off(() => TenantModeScreen());
                       } catch (e) {
                         print(e);
                       }
@@ -217,7 +220,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       Navigator.of(context).pushNamed(Routes.setUpScreen);
                     },
                     child: LogInWidget.createRichTextWidget(
-                        inputFirst: "Don't have Stacy account?",
+                        inputFirst: "Don't have Roomy account?",
                         colorFirst: const Color(0xFF020433),
                         inputLast: ' Sign up',
                         colorLast: Colors.blue,

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
-import 'package:roomy/app/loading_screen.dart';
 import 'package:roomy/common/route/route_generator.dart';
 import 'package:roomy/feature/on_boarding/on_boarding_screen.dart';
+import 'package:roomy/feature/signin_signup/resources/loading.dart';
 import 'package:roomy/feature/tenant_mode_listing/ui/tenant_mode_screen.dart';
 import 'package:roomy/providers/auth_provider.dart';
 import 'package:roomy/providers/chat_provider.dart';
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return InitialLoading();
+                  return InitialLoadingScreen();
                 }
                 return OnBoardingScreen();
               }),

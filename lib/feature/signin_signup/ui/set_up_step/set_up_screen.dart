@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
+import 'package:roomy/feature/landlord_mode/ui/landlord_mode_screen.dart';
 import 'package:roomy/feature/landlord_mode_post_room/widget/landlord_mode_widget.dart';
 import 'package:roomy/common/route/routes.dart';
 import 'package:roomy/feature/signin_signup/bloc/step_four/bloc_step_four.dart';
@@ -36,6 +40,7 @@ class _SetUpScreenState extends State<SetUpScreen> {
   String maxRent;
   String moveInDate;
   String goingTo;
+  File image;
 
   int checkInputFour = 4;
   bool checkState = false;
@@ -99,17 +104,21 @@ class _SetUpScreenState extends State<SetUpScreen> {
                 });
               }),
           SetUpStepFour(
-            switchStep: switchStep,
-            fullNameController: fullNameController,
-            birthdayController: birthdayController,
-            emailController: emailController,
-            infoMeController: infoMeController,
-            jobController: jobController,
-            cfPasswordController: cfPasswordController,
-            passwordController: passwordController,
-            phoneController: phoneController,
-            placeController: placeController,
-          ),
+              switchStep: switchStep,
+              fullNameController: fullNameController,
+              birthdayController: birthdayController,
+              emailController: emailController,
+              infoMeController: infoMeController,
+              jobController: jobController,
+              cfPasswordController: cfPasswordController,
+              passwordController: passwordController,
+              phoneController: phoneController,
+              placeController: placeController,
+              onImageSelected: (val) {
+                setState(() {
+                  image = val;
+                });
+              }),
           SetUpStepFive(
             switchStep: switchStep,
           )
@@ -202,6 +211,7 @@ class _SetUpScreenState extends State<SetUpScreen> {
                             email: emailController.text,
                             gender: true,
                             isAdmin: true,
+                            imageFile: image,
                             occupation: jobController.text,
                             maxRent: maxRent,
                             workPlace: placeController.text,
@@ -211,7 +221,9 @@ class _SetUpScreenState extends State<SetUpScreen> {
                                     birthdayController.text.split(',')[1]),
                             imgAvt:
                                 'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-                            isLandlord: lookingFor == 'tenant' ? true : false,
+                            isLandlord: lookingFor.toLowerCase() == 'tenant'
+                                ? true
+                                : false,
                             name: fullNameController.text,
                             password: passwordController.text,
                             phoneNumber: phoneController.text,
@@ -219,10 +231,11 @@ class _SetUpScreenState extends State<SetUpScreen> {
                           );
                           Provider.of<AuthProvider>(context, listen: false)
                               .setUser(user);
-                          if (user.isAdmin) {
+                          if (user.isLandlord) {
                             await Provider.of<AuthProvider>(context,
                                     listen: false)
                                 .signUp(user);
+                            Get.offAll(() => LandlordModeScreen());
                           }
                           Navigator.of(context)
                               .pushNamed(Routes.setUpSuccessScreen);

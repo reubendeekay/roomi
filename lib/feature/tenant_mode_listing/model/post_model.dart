@@ -27,11 +27,13 @@ class PostModel {
     this.prefferedGender,
     this.prefferedOccupation,
     this.rules,
+    this.status,
   });
   String id;
   String rentAmount;
   String deposit;
   List<dynamic> images;
+  final bool status;
   int amountBed;
   int amountBath;
   String title;
@@ -69,12 +71,13 @@ class PostModel {
       prefferedGender: json['prefferedGender'],
       prefferedOccupation: json['prefferedOccupation'],
       rules: json['rules'],
-      selected: json['selected'],
+      selected: json['selected'] ?? false,
       state: json['state'],
       timeRent: json['timeRent'],
       title: json['title'],
       type: json['type'],
       rentAmount: json['rentAmount'],
+      status: json['status'],
     );
   }
 
@@ -99,5 +102,6 @@ class PostModel {
         'prefferedOccupation': prefferedOccupation,
         'rules': rules,
         'ammenities': ammenities,
+        'status': false,
       };
 }

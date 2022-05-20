@@ -80,11 +80,10 @@ class _ChatLandlordBookConfirmState extends State<ChatLandlordBookConfirm> {
                               ? const SizedBox()
                               : GestureDetector(
                                   onTap: () async {
-                                    final uid =
-                                        FirebaseAuth.instance.currentUser.uid;
                                     await Provider.of<TenantProvider>(context,
                                             listen: false)
-                                        .addTenant(uid, widget.room.post.id);
+                                        .addTenant(widget.room.user.id,
+                                            widget.room.post.id);
                                     setState(() {
                                       booked = !booked;
                                     });

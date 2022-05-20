@@ -14,11 +14,18 @@ import 'listing_full_width_widget.dart';
 import 'tenant_listing_widget.dart';
 
 class ListPostWidget extends StatelessWidget {
-  const ListPostWidget(
-      {this.child, this.isSaved = false, this.isLandlord = false});
+  const ListPostWidget({
+    this.child,
+    this.isSaved = false,
+    this.isLandlord = false,
+    this.isAdmin = false,
+    this.isPending = false,
+  });
   final Widget child;
   final bool isSaved;
   final bool isLandlord;
+  final bool isAdmin;
+  final bool isPending;
 
   Future path(BuildContext context) {
     if (isSaved) {
@@ -27,8 +34,12 @@ class ListPostWidget extends StatelessWidget {
     } else if (isLandlord) {
       return Provider.of<PostProvider>(context, listen: false)
           .fetcLandlordRooms();
+    } else if (isAdmin) {
+      return Provider.of<PostProvider>(context, listen: false).fetchAlRooms();
+    } else if (isPending) {
+      return Provider.of<PostProvider>(context, listen: false)
+          .fetchPendingRooms();
     }
-
     return Provider.of<PostProvider>(context, listen: false)
         .fetchRooms(Provider.of<AuthProvider>(context, listen: false).user);
   }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/user_model.dart';
@@ -38,10 +39,18 @@ class AuthProvider with ChangeNotifier {
       print(e.toString());
     }
     newUser.id = signUpUser.user.uid;
-    if (newUser.imgAvt == null) {
-      newUser.imgAvt =
-          "https://media.istockphoto.com/vectors/user-icon-people-icon-isolated-on-white-background-vector-vector-id1210939712?k=20&m=1210939712&s=612x612&w=0&h=xJqEPQnMiNofprbLXWdEtJQ75QL79lQ5N76J4JOdTIM=";
+    String url;
+
+    if (newUser.imageFile != null) {
+      final results = await FirebaseStorage.instance
+          .ref('userData/${signUpUser.user.uid}/')
+          .putFile(newUser.imageFile);
+
+      url = await results.ref.getDownloadURL();
     }
+
+    newUser.imgAvt = url;
+
     await FirebaseFirestore.instance
         .collection('users')
         .doc(signUpUser.user?.uid)
@@ -97,5 +106,38 @@ class AuthProvider with ChangeNotifier {
       'updatedAt': Timestamp.now(),
     });
     notifyListeners();
+  }
+
+  Future<List<UserModel>> getAllLandlords() async {
+    final results = await FirebaseFirestore.instance.collection('users').get();
+    notifyListeners();
+
+    return results.docs.map((doc) => UserModel.fromJson(doc)).toList();
+  }
+
+  Future<void> makeAdmin(String uid, bool exists) async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'isAdmin': !exists,
+    });
+    notifyListeners();
+  }
+
+  Future<void> deleteUser(String uid) async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+    notifyListeners();
+  }
+
+  Future<void> makeLandlord(String uid) async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'isLandlord': true,
+    });
+    notifyListeners();
+  }
+
+  Future<List<UserModel>> getAllUsers() async {
+    final results = await FirebaseFirestore.instance.collection('users').get();
+    notifyListeners();
+
+    return results.docs.map((doc) => UserModel.fromJson(doc)).toList();
   }
 }

@@ -44,10 +44,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCCu5LvHUcipdScpeSAZw-Un7aB6tabVfc',
-    appId: '1:988576075256:android:ddadd7d4c63b9b0738da0d',
-    messagingSenderId: '988576075256',
-    projectId: 'car-management-system-6d9cf',
-    storageBucket: 'car-management-system-6d9cf.appspot.com',
+    apiKey: 'AIzaSyD_uc0GUisrki0jZEXUbFQ1dxmcOILe7JQ',
+    appId: '1:470633473616:android:b347da4bd296545a89d355',
+    messagingSenderId: '470633473616',
+    projectId: 'roomy-a693e',
+    storageBucket: 'roomy-a693e.appspot.com',
   );
 }

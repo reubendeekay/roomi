@@ -37,6 +37,7 @@ dependencies:
   flutter_bloc: ^7.3.3
   flutter_localizations:
     sdk: flutter
+  flutter_phone_direct_caller: ^2.1.1
   flutter_secure_storage: 3.3.5
   flutter_xlider: ^3.4.0
   geocoder2: ^1.1.0

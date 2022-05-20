@@ -18,7 +18,7 @@ class LandlordModeScreen extends StatefulWidget {
     },
     <String, dynamic>{
       'icon': 'images/tenant_mode/ic_switch@3x.png',
-      'title': 'Switch to Tenant Mode',
+      'title': 'Chat',
     },
     <String, dynamic>{
       'icon': 'images/tenant_mode/ic_help@3x.png',

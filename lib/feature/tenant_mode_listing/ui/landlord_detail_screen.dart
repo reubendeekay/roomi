@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:roomy/app/widget_support.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/landlord_detail_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/sab_landlord_room_detail.dart';
 import 'package:roomy/feature/tenant_mode_listing/widget/info_landlord_room_detail.dart';
+import 'package:roomy/providers/auth_provider.dart';
+import 'package:roomy/providers/post_provider.dart';
 
 class LandlordDetailScreen extends StatelessWidget {
   LandlordDetailScreen({this.room});
@@ -110,6 +113,8 @@ class LandlordDetailScreen extends StatelessWidget {
         'title': '${room.post.amountBath} bath'
       }
     ];
+
+    final user = Provider.of<AuthProvider>(context, listen: false).user;
     return Scaffold(
         body: CustomScrollView(
           slivers: [
@@ -156,15 +161,46 @@ class LandlordDetailScreen extends StatelessWidget {
             )
           ],
         ),
-        bottomNavigationBar: SafeArea(
-          child: SizedBox(
-            height: 66,
-            child: LandlordDetailWidget.createButtonRequest(
-                context: context,
-                room: room,
-                totalMoney: room.post.rentAmount,
-                deposit: room.post.deposit),
-          ),
-        ));
+        bottomNavigationBar: user.isLandlord ||
+                user.isAdmin && room.post.status == false
+            ? user.isAdmin
+                ? SafeArea(
+                    child: SizedBox(
+                    height: 66,
+                    child: RaisedButton(
+                      color: Colors.green,
+                      onPressed: () async {
+                        await Provider.of<PostProvider>(context, listen: false)
+                            .approvePost(
+                          room.post.id,
+                        );
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text(
+                            'Approved',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ));
+                      },
+                      child: const Text(
+                        'Approve',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ))
+                : null
+            : SafeArea(
+                child: SizedBox(
+                  height: 66,
+                  child: LandlordDetailWidget.createButtonRequest(
+                      context: context,
+                      room: room,
+                      totalMoney: room.post.rentAmount,
+                      deposit: room.post.deposit),
+                ),
+              ));
   }
 }

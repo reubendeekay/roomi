@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get_connect/http/src/certificates/certificates.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/post_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/room_model.dart';
 import 'package:roomy/feature/tenant_mode_listing/model/user_model.dart';
@@ -39,6 +40,14 @@ class PostProvider with ChangeNotifier {
   List<RoomModel> _wishlist = [];
   List<RoomModel> get wishlist => _wishlist;
 
+  String getGender(bool isTrue) {
+    if (isTrue == true) {
+      return 'Male';
+    } else {
+      return 'Female';
+    }
+  }
+
   Future<void> postRoom(PostModel room) async {
     final id = roomsCollection.doc().id;
     room.id = id;
@@ -55,16 +64,65 @@ class PostProvider with ChangeNotifier {
   }
 
   Future<List<RoomModel>> fetchRooms(UserModel you) async {
-    final snap = await roomsCollection.get();
+    final snap = await roomsCollection.where('status', isEqualTo: true).get();
     final List<UserModel> users = [];
     final snapshot = snap.docs.where((element) =>
-        // element['prefferedGender'] == you.gender &&
-        // (you.questionnaires[2].contains('No') &&
+        element['prefferedGender'] == getGender(you.gender) &&
+        // element['occupation'] == you.occupation &&
+        (you.questionnaires.contains('pet')) &&
         //     element['rules'].contains('No')) &&
         double.parse(element['rentAmount'].toString()) <
-        double.parse(you.maxRent.toString()));
+            double.parse(you.maxRent.toString()));
 
     final posts = snapshot.map((doc) => PostModel.fromJson(doc)).toList();
+
+    for (PostModel post in posts) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(post.ownerId)
+          .get()
+          .then((value) {
+        users.add(UserModel.fromJson(value));
+      });
+    }
+    notifyListeners();
+
+    return _rooms = posts
+        .map((post) => RoomModel(
+            post: post,
+            user: users.firstWhere((user) => user.id == post.ownerId)))
+        .toList();
+  }
+
+  Future<List<RoomModel>> fetchAlRooms() async {
+    final snap = await roomsCollection.where('status', isEqualTo: true).get();
+    final List<UserModel> users = [];
+
+    final posts = snap.docs.map((doc) => PostModel.fromJson(doc)).toList();
+
+    for (PostModel post in posts) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(post.ownerId)
+          .get()
+          .then((value) {
+        users.add(UserModel.fromJson(value));
+      });
+    }
+    notifyListeners();
+
+    return _rooms = posts
+        .map((post) => RoomModel(
+            post: post,
+            user: users.firstWhere((user) => user.id == post.ownerId)))
+        .toList();
+  }
+
+  Future<List<RoomModel>> fetchPendingRooms() async {
+    final snap = await roomsCollection.where('status', isEqualTo: false).get();
+    final List<UserModel> users = [];
+
+    final posts = snap.docs.map((doc) => PostModel.fromJson(doc)).toList();
 
     for (PostModel post in posts) {
       await FirebaseFirestore.instance
@@ -91,7 +149,10 @@ class PostProvider with ChangeNotifier {
     final userResult =
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
 
-    final posts = snapshot.docs.map((doc) => PostModel.fromJson(doc)).toList();
+    final posts = snapshot.docs
+        .where((element) => element['status'] == true)
+        .map((doc) => PostModel.fromJson(doc))
+        .toList();
 
     notifyListeners();
 
@@ -128,5 +189,17 @@ class PostProvider with ChangeNotifier {
     }
     _wishlist = myWishlist;
     return _wishlist;
+  }
+
+  Future<void> deletePost(String id) async {
+    await roomsCollection.doc(id).delete();
+    notifyListeners();
+  }
+
+  Future<void> approvePost(String id) async {
+    await roomsCollection.doc(id).update({
+      'status': true,
+    });
+    notifyListeners();
   }
 }
